@@ -5,16 +5,15 @@
 
 <div class="notes">
     {#each notes as note}
-        <Card note={note} on:delete />
+        <Card note={note} on:delete on:edit />
     {/each}
 </div>
 
 <style>
 	.notes {
-		display: flex;
-        flex-direction: column;
-        justify-items: center;
-        align-items: center;
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+        grid-gap: 10px;
         height: 100%;
 	}
 </style>

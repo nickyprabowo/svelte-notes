@@ -2,7 +2,7 @@
     import { createEventDispatcher } from 'svelte';
 
     const dispatch = createEventDispatcher()
-    let note = "";
+    export let note = { id: "", content: "" };
 
     const handleChange = (e) => {
         note = e.target.value;
@@ -12,31 +12,24 @@
         dispatch("note", {
             content: note
         })
+        note = { id: "", content: "" };
     }
 </script>
 <div class="note-section">
     <div class="note-wrapper">
-        <h1>"FOR"EVERNOTE</h1>
         <textarea
             name="note"
             placeholder="isi catatan Anda"
             class="note"
-            value={note}
-            rows="4"
+            value={note.content}
+            rows="6"
             cols="9"
             on:change={handleChange}
         />
         <button type="submit" class="btn fluid submit" on:click={handleSubmit}>Save</button>
     </div>
 </div>
-<style>
-    h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 3em;
-		font-weight: 100;
-    }
-    
+<style>    
     .note-section {
         display: flex;
         flex-direction: column;
@@ -44,6 +37,10 @@
         align-items: center;
         height: 100%;
         background: #FFFFFF;
+    }
+
+    .note-wrapper {
+        width: 80%;
     }
 
 	.note {
