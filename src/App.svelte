@@ -4,21 +4,32 @@
 	import Note from "./Note.svelte";
 	import Modal from "./Modal.svelte";
 	let showModal = false;
+	let onEdit = false;
 	let selectedNote = { id: "", content: ""};
 	let notes = [
 		{ id: 'J---aiyznGQ', content: 'Keyboard Cat' },
 		{ id: 'z_AbfPXTKms', content: 'Maru' },
 		{ id: 'OUtn3pvWmpg', content: 'Henri The Existential Cat' },
-		{ id: 'OUtn3pvWmpg', content: 'Henri The Existential Cat' }
+		{ id: 'Utn3pvmpg', content: 'Asereje' }
 	];
 	
 	const handleCreateNote = e => {
-		const note = { id: Math.random(), content: e.detail.content };
-		notes = [...notes, note];
-	}
-
-	const handleEditNote = e => {
-		const note = notes.find(note => note.id === selectedNote.id);
+		if (onEdit) {
+			notes = notes.map(note => {
+				if (note.id === selectedNote.id) {
+					return {
+						...note,
+						content: e.detail.content
+					}
+				}
+				return note
+			});
+			closeEdit();
+		} else {
+			const note = { id: Math.random(), content: e.detail.content };
+			notes = [...notes, note];
+			closeModal();
+		}
 	}
 
 	const handleDeleteNote = e => {
@@ -36,7 +47,14 @@
 
 	const handleEdit = e => {
 		selectedNote = e.detail.note;
+		onEdit = true;
 		openModal();
+	}
+
+	const closeEdit = e => {
+		selectedNote = { id: "", content: ""};
+		onEdit = false;
+		closeModal();
 	}
 </script>
 
@@ -50,8 +68,8 @@
 		</div>
 		<Note notes={notes} on:delete={handleDeleteNote} on:edit={handleEdit} />
 		{#if showModal}
-			<Modal on:close={closeModal} >
-				<Input on:note={handleCreateNote} note={selectedNote} />
+			<Modal on:close={closeEdit} >
+				<Input on:note={handleCreateNote} note={selectedNote} onEdit={onEdit} />
 			</Modal>
 		{/if}
 	</div>

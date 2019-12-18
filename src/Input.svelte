@@ -3,8 +3,12 @@
 
     const dispatch = createEventDispatcher()
     export let note = { id: "", content: "" };
+    export let onEdit = false;
 
     const handleChange = (e) => {
+        if (onEdit) {
+            note = { id: note.id, content: e.target.value };
+        }
         note = e.target.value;
     }
 
@@ -21,7 +25,7 @@
             name="note"
             placeholder="isi catatan Anda"
             class="note"
-            value={note.content}
+            bind:value={note.content}
             rows="6"
             cols="9"
             on:change={handleChange}
